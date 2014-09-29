@@ -17,6 +17,7 @@ sigint.ListenForSIGINT(func() {
 })
 ```
 
+Visit http://godoc.org/github.com/adampresley/sigint for documentation.
 
 ## License
 The MIT License (MIT)
