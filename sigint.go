@@ -15,7 +15,26 @@ package sigint
 import (
 	"os"
 	"os/signal"
+	"syscall"
 )
+
+/*
+Sets up a listener to execute a function when the SIGINT
+event or SIGTERM is fired (usually CTRL+C). The callback function
+has no arguments and does not need to return anything. This is
+a bit broader and works across more operating systems. The original
+function is kept for backward compatability.
+*/
+func Listen(handler func()) {
+	done := make(chan os.Signal, 1)
+	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+
+	go func() {
+		<-done
+		handler()
+		return
+	}()
+}
 
 /*
 Sets up a listener to execute a function when the SIGINT
